@@ -1,13 +1,12 @@
-library(RColorBrewer)
-library(cowplot)
+library(readr)
+library(tidyverse)
 library(reshape2)
 library(ggplot2)
 library(scales)
-library(ggplot2)
-library(tidyverse)
-library(readr)
+library(RColorBrewer)
+library(cowplot)
 
-# open the adjancency matrix describing the scientific collaboration evolution rates of french cities bet. 2000 and 2013
+# open the adjacency matrix describing the scientific collaboration evolution rates of french cities bet. 2000 and 2013
 # data: SCI Expanded (articles, reviews, letters). NETSCIENCE project (UMR LISST, 2017)
 # revisited in 2020, UMR Géographie-cités, Paris
 
@@ -75,8 +74,8 @@ get_upper_tri <- function(x){
 # melted_netmtri <- netmtri %>%
                  # as.table() %>%
                  # as_tibble(.name_repair = "unique", rownames = NA) %>%
-                 # rename( Var = names(.))  %>%
-                 # rename( value = Var3)
+                 # rename(Var = names(.))  %>%
+                 # rename(value = Var3)
 
 # ggplot2 Heatmap
 
@@ -119,7 +118,7 @@ m <- melted_netmtri %>%
 
 plot.new()
 
-ggdraw(add_sub(m, fontface="italic", size=8, color="black", x = -1.1, y = 0.5, hjust= 0, vjust=0.5, fontfamily = "sans", lineheight=0.5,
+ggdraw(add_sub(m, fontface = "italic", size = 8, color = "black", x = -1.1, y = 0.5, hjust = 0, vjust = 0.5, fontfamily = "sans", lineheight = 0.5,
                label =
                  "Clef de lecture : Entre 2000 et 2013, les collaborations entre les villes de 1000 à 9000 étudiants et l'international ont augmenté de près de 70 %.\n
                  Sur la même période, les collaborations scientifiques de Paris avec l'international n'ont augmenté que de 40 %,\n
