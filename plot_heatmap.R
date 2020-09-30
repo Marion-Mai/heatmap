@@ -9,9 +9,17 @@ library(readr)
 
 # open the adjancency matrix describing the scientific collaboration evolution rates of french cities bet. 2000 and 2013
 # data: SCI Expanded (articles, reviews, letters). NETSCIENCE project (UMR LISST, 2017)
+# MESRI data : Number of students (primary enrolment in public higher education without double counts)
 # revisited in 2020, UMR Géographie-cités, Paris
 
 netm <- read_rds("data/frcollab_evolmatrix_2000-2013.rds")
+
+library(igraph)
+
+g <- graph_from_adjacency_matrix(netm, mode = c("undirected"), weighted = T,
+                            diag = T, add.colnames = T, add.rownames = NA)
+E(g)$weight
+
 
 # classic heatmap with base R
 
@@ -21,14 +29,17 @@ netm <- read_rds("data/frcollab_evolmatrix_2000-2013.rds")
 
 palf <- colorRampPalette(c("gold", "dark orange"))
 
-heatmap(netm[c(1:6, 8),c(1:6, 8)], # do not display the category 7 which stands for "Autres villes françaises"
+
+#333333
+
+heatmap(netm[c(1:5, 8),c(1:5, 8)], # do not display the category 6 and 7 which stands for "Villes sans étudiants du public" and "Autres villes françaises"
         Rowv = NA, Colv = "Rowv",
         # cex.lab = 1.5, cex.axis = 1.5, cex.main = 1.5, cex.sub = 1.5,
         scale = "none", margins = c(12, 12), xlab = "", ylab = "", main = "Taux de croissance des coopérations \nentre catégories de villes entre 2000 et 2013",
-        col = colorRampPalette(brewer.pal(8, "Oranges"))(25)) # col = palf(100)
+        col = colorRampPalette(brewer.pal(7, "Oranges"))(25)) # col = palf(100)
 
 legend(x = 0.6, y = 0.2, legend = c("Croissance faible", "Croissance moyenne", "Croissance forte"), # alternative legend pos: "bottomright"
-       fill = colorRampPalette(brewer.pal(8, "Oranges"))(3))
+       fill = colorRampPalette(brewer.pal(7, "Oranges"))(3))
 
 # classy heatmap with ggplot2
 
@@ -53,7 +64,7 @@ get_upper_tri <- function(x){
 # select the desired dataset
 # getting rid of the category 7 which stands for "Autres villes françaises"
 
-  netmtri <- get_lower_tri(netm[c(1:6, 8),c(1:6, 8)])
+  netmtri <- get_lower_tri(netm[c(1:5, 8),c(1:5, 8)])
 # netmtri <- get_upper_tri(netm[c(1:6, 8),c(1:6, 8)])
 
 ############################################################################################
@@ -98,7 +109,7 @@ svg(paste("Heatmap_2000_2013_fr_collab.svg"), width = 7, height = 6)
 
 
 melted_netmtri <- melted_netmtri %>%
-                  filter(Var1 != "Paris (plus de 1 M d'étudiants)")
+                  filter(Var1 != "Paris (plus de 400 000 étudiants)")
 
 
 m <- melted_netmtri %>%
@@ -110,6 +121,7 @@ m <- melted_netmtri %>%
   theme_minimal()+
   theme(plot.title = element_text(face = "bold"), # , hjust = -0.3
         plot.subtitle = element_text(face = "italic"),
+        axis.title = element_text(color = "#4c4c4c"),
         axis.text.x = element_text(angle = 45, vjust = 1,
                                    size = 10, hjust = 1),
         axis.text.y = element_text(size = 10),
@@ -119,12 +131,13 @@ m <- melted_netmtri %>%
 
 plot.new()
 
-ggdraw(add_sub(m, fontface="italic", size=8, color="black", x = -1.1, y = 0.5, hjust= 0, vjust=0.5, fontfamily = "sans", lineheight=0.5,
+ggdraw(add_sub(m, fontface = "italic", size = 7.5, color = "black", x = -1.1, y = 0.5, hjust = 0, vjust = 0.5, fontfamily = "sans", lineheight = 0.5,
                label =
-                 "Clef de lecture : Entre 2000 et 2013, les collaborations entre les villes de 1000 à 9000 étudiants et l'international ont augmenté de près de 70 %.\n
+                  " Clef de lecture : Entre 2000 et 2013, les collaborations entre les villes de 2000 à 10 000 étudiants et l'international ont augmenté de plus de 60 %.\n
                  Sur la même période, les collaborations scientifiques de Paris avec l'international n'ont augmenté que de 40 %,\n
-                 et celles des 10 autres villes de plus de 100 000 étudiants et l'international, de 45 %. \n
-                 Source: Science Citation Index Expanded (articles, recensions et lettres). \n
+                 et celles des 11 villes entre 30 000 et 400 000 étudiants et l'international, de 45 %. \n
+                 Source: Science Citation Index Expanded (articles, recensions et lettres) ; \n
+                 Nbre. d'inscriptions principales d'étudiants du sup. public, sans doubles comptes (open data du MESR)\n
                  Comptage entier fractionné à l'agglomération urbaine, moyenne mobile sur 3 ans. \n
                  Données du projet Labex SMS NETSCIENCE (UMR LISST, 2017). Réalisation : MM, UMR Géographie-cités, 2020."
 
@@ -132,4 +145,10 @@ ggdraw(add_sub(m, fontface="italic", size=8, color="black", x = -1.1, y = 0.5, h
 
 dev.off()
 
+# Informations supplémentaires :
+# Volume de collaborations par classe en 2013 :\n
+# Paris : 15 000 ; Villes entre 30 000 et 400 000 ets. : 23 000 ; Villes entre 10 000 et 30 000 ets. : 10 000 ;\n
+# Villes entre 2000 et 10 000 ets. : 2200 ; Villes entre 700 et 2000 ets. : 1300.\n
+
 # take care!
+
