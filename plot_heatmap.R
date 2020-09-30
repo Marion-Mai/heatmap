@@ -137,7 +137,7 @@ ggdraw(add_sub(m, fontface = "italic", size = 8, color = "black", x = -1.1, y = 
                  Sur la même période, les collaborations scientifiques de Paris avec l'international n'ont augmenté que de 40 %,\n
                  et celles des 11 villes entre 30 000 et 400 000 étudiants et l'international, de 45 %. \n
                  Source: Science Citation Index Expanded (articles, recensions et lettres) ; \n
-                 Nbre. d'inscriptions principales d'étudiants du sup. public, sans doubles comptes (open data du MESR)\n
+                 Nbre. d'inscriptions principales d'étudiants du sup. public en 2014, sans doubles comptes (données ouvertes du MESR).\n
                  Comptage entier fractionné à l'agglomération urbaine, moyenne mobile sur 3 ans. \n
                  Données du projet Labex SMS NETSCIENCE (UMR LISST, 2017). Réalisation : MM, UMR Géographie-cités, 2020."
 
