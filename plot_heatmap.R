@@ -130,11 +130,8 @@ m <- melted_netmtri %>%
 
 plot.new()
 
-<<<<<<< HEAD
-ggdraw(add_sub(m, fontface = "italic", size = 7.5, color = "black", x = -1.1, y = 0.5, hjust = 0, vjust = 0.5, fontfamily = "sans", lineheight = 0.5,
-=======
+
 ggdraw(add_sub(m, fontface = "italic", size = 8, color = "black", x = -1.1, y = 0.5, hjust = 0, vjust = 0.5, fontfamily = "sans", lineheight = 0.5,
->>>>>>> 79b5535d56cdcc1afb4ea6d8f6e6061184855b0f
                label =
                   " Clef de lecture : Entre 2000 et 2013, les collaborations entre les villes de 2000 à 10 000 étudiants et l'international ont augmenté de plus de 60 %.\n
                  Sur la même période, les collaborations scientifiques de Paris avec l'international n'ont augmenté que de 40 %,\n
