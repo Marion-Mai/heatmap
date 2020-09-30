@@ -1,12 +1,13 @@
-library(readr)
-library(tidyverse)
+library(RColorBrewer)
+library(cowplot)
 library(reshape2)
 library(ggplot2)
 library(scales)
-library(RColorBrewer)
-library(cowplot)
+library(ggplot2)
+library(tidyverse)
+library(readr)
 
-# open the adjacency matrix describing the scientific collaboration evolution rates of french cities bet. 2000 and 2013
+# open the adjancency matrix describing the scientific collaboration evolution rates of french cities bet. 2000 and 2013
 # data: SCI Expanded (articles, reviews, letters). NETSCIENCE project (UMR LISST, 2017)
 # MESRI data : Number of students (primary enrolment in public higher education without double counts)
 # revisited in 2020, UMR Géographie-cités, Paris
@@ -31,7 +32,7 @@ palf <- colorRampPalette(c("gold", "dark orange"))
 
 #333333
 
-heatmap(netm[c(1:5, 8),c(1:5, 8)], # do not display the category 6 and 7 which stands for "Villes sans étudiants du public" and "Autres villes françaises"
+heatmap(netm[c(1:6, 9),c(1:6, 9)], # do not display the categories 7 and 8 which stand for "Villes sans étudiants du public" and "Autres villes françaises"
         Rowv = NA, Colv = "Rowv",
         # cex.lab = 1.5, cex.axis = 1.5, cex.main = 1.5, cex.sub = 1.5,
         scale = "none", margins = c(12, 12), xlab = "", ylab = "", main = "Taux de croissance des coopérations \nentre catégories de villes entre 2000 et 2013",
@@ -61,10 +62,10 @@ get_upper_tri <- function(x){
 }
 
 # select the desired dataset
-# getting rid of the category 7 which stands for "Autres villes françaises"
+# getting rid of the categories 7 and 8
 
-  netmtri <- get_lower_tri(netm[c(1:5, 8),c(1:5, 8)])
-# netmtri <- get_upper_tri(netm[c(1:6, 8),c(1:6, 8)])
+  netmtri <- get_lower_tri(netm[c(1:6, 9),c(1:6, 9)])
+# netmtri <- get_upper_tri(netm[c(1:6, 9),c(1:6, 9)])
 
 ############################################################################################
 
@@ -85,8 +86,8 @@ get_upper_tri <- function(x){
 # melted_netmtri <- netmtri %>%
                  # as.table() %>%
                  # as_tibble(.name_repair = "unique", rownames = NA) %>%
-                 # rename(Var = names(.))  %>%
-                 # rename(value = Var3)
+                 # rename( Var = names(.))  %>%
+                 # rename( value = Var3)
 
 # ggplot2 Heatmap
 
@@ -104,7 +105,7 @@ ggplot(data = melted_netmtri, aes(Var1, reorder(Var2, desc(Var2)), fill = value*
 
 # svg output with captions
 
-svg(paste("Heatmap_2000_2013_fr_collab.svg"), width = 7, height = 6)
+svg(paste("Heatmap_2000_2013_fr_collab_final2.svg"), width = 7, height = 6)
 
 
 melted_netmtri <- melted_netmtri %>%
@@ -130,8 +131,7 @@ m <- melted_netmtri %>%
 
 plot.new()
 
-
-ggdraw(add_sub(m, fontface = "italic", size = 8, color = "black", x = -1.1, y = 0.5, hjust = 0, vjust = 0.5, fontfamily = "sans", lineheight = 0.5,
+ggdraw(add_sub(m, fontface = "italic", size = 7.5, color = "black", x = -1.1, y = 0.5, hjust = 0, vjust = 0.5, fontfamily = "sans", lineheight = 0.5,
                label =
                   " Clef de lecture : Entre 2000 et 2013, les collaborations entre les villes de 2000 à 10 000 étudiants et l'international ont augmenté de plus de 60 %.\n
                  Sur la même période, les collaborations scientifiques de Paris avec l'international n'ont augmenté que de 40 %,\n
@@ -148,7 +148,6 @@ dev.off()
 # Informations supplémentaires :
 # Volume de collaborations par classe en 2013 :\n
 # Paris : 15 000 ; Villes entre 30 000 et 400 000 ets. : 23 000 ; Villes entre 10 000 et 30 000 ets. : 10 000 ;\n
-# Villes entre 2000 et 10 000 ets. : 2200 ; Villes entre 700 et 2000 ets. : 1300.\n
+# Villes entre 2000 et 10 000 ets. : 2200 ; Villes entre 700 et 2000 ets. : 665 ; Villes entre 20 et 700 ets. : 650.\n
 
 # take care!
-
