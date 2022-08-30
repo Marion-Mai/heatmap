@@ -1,11 +1,8 @@
 library(RColorBrewer)
 library(cowplot)
 library(reshape2)
-library(ggplot2)
 library(scales)
-library(ggplot2)
 library(tidyverse)
-library(readr)
 
 # open the adjancency matrix describing the scientific collaboration evolution rates of french cities bet. 2000 and 2013
 # data: SCI Expanded (articles, reviews, letters). NETSCIENCE project (UMR LISST, 2017)
@@ -28,9 +25,6 @@ E(g)$weight
 # https://stackoverflow.com/questions/57395558/how-to-show-legend-in-heatmap
 
 palf <- colorRampPalette(c("gold", "dark orange"))
-
-
-#333333
 
 heatmap(netm[c(1:6, 9),c(1:6, 9)], # do not display the categories 7 and 8 which stand for "Villes sans étudiants du public" and "Autres villes françaises"
         Rowv = NA, Colv = "Rowv",
